@@ -91,10 +91,10 @@ WSGI_APPLICATION = 'Merdeka.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'w3indonesia',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
+        'NAME': 'w3indonesia_db',
+        'USER': 'endo',
+        'PASSWORD': 'Merdeka2021',
+        'HOST': '82.112.234.38',
         'PORT': '5432',
     }
 }
