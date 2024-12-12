@@ -1,0 +1,226 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>W3Indonesia</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" >
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+
+  
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+</head>
+<body>
+    
+    {% block navbar %}
+    <nav class="navbar navbar-expand-lg bg-navbar navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" style="font-weight: bold; font-family: system-ui, -apple-system; " href="/">W3Indonesia</a>
+            
+            <button class="navbar-toggler"  data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-hr"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto"> 
+                    <li class="nav-item">
+                        <a class="nav-link" href="/bootcamp/">Bootcamp</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/jobs/">Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/scholarship/">Scholarship</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/news/">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact/">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+
+    {% block content %}
+    {% endblock %}
+
+    <button id="backToTop" class="btn btn-primary btn-lg" title="Back to top">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+
+
+    {% block footer %}
+    <footer class="footer-kustom bg-light text-center py-4">
+        <div class="container-fluid">
+            <ul class="bd-footer-links ps-0 mb-3">
+                <li class="d-inline-block"><a href="/">Facebook</a></li>
+                <li class="d-inline-block ms-3"><a href="https://www.instagram.com/w3indonesia">Instagram</a></li>
+                <li class="d-inline-block ms-3"><a href="https://www.linkedin.com/in/w3indonesia">LinkedIn</a></li>
+                <li class="d-inline-block ms-3"><a href="/">YouTube</a></li>
+              </ul>
+              <p class="mb-0">Dibuat oleh W3Indonesia team untuk Indonesia. Bersama kita majukan teknologi Indonesia.</p>
+              <p class="mb-0">&copy2024 by W3Indonesia. All rights reserved. </p>
+            </div>
+    </footer>
+    {% endblock %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const topicCards = document.querySelectorAll('.card-header');
+    
+            function getLightColor(index) {
+                const hue = (index * 45) % 360;       
+                const saturation = 70;                
+                const lightness = 90;                
+                return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            }
+    
+            topicCards.forEach((card, index) => {
+                const color = getLightColor(index);  
+                card.style.backgroundColor = color;  
+            });
+        });
+
+
+        let mybutton = document.getElementById("backToTop");
+    
+        window.onscroll = function() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            mybutton.style.display = "block";
+            } else {
+            mybutton.style.display = "none";
+            }
+        };
+    
+        mybutton.onclick = function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+
+        // Add copy buttons to <pre><code> blocks
+        document.querySelectorAll("#tutorial-content pre code").forEach(function (codeBlock) {
+            let pre = codeBlock.parentElement;
+
+            // Ensure <pre> is styled for relative positioning and horizontal scrolling
+            pre.style.position = "relative";
+            pre.style.overflow = "auto"; // Allow horizontal scrolling if needed
+
+            // Create the floating copy button
+            let copyButton = document.createElement("button");
+            copyButton.className = "copy-btn";
+            copyButton.style.position = "absolute";
+            copyButton.style.top = "10px";  // Adjust vertical position
+            copyButton.style.right = "10px";  // Adjust horizontal position
+            copyButton.style.background = "transparent";
+            copyButton.style.border = "none";
+            copyButton.style.cursor = "pointer";
+            copyButton.style.color = "#6c757d";
+            copyButton.style.fontSize = "14px";
+            copyButton.innerHTML = `<i class="bi bi-clipboard"></i>`;
+            copyButton.setAttribute("data-bs-toggle", "tooltip");
+            copyButton.setAttribute("data-bs-placement", "top");
+            copyButton.setAttribute("title", "Copy to clipboard");
+
+            // Initialize the tooltip for this button
+            new bootstrap.Tooltip(copyButton);
+
+            // Copy functionality
+            copyButton.addEventListener("click", function () {
+                navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+                    // Change tooltip to "Copied!" on success
+                    copyButton.setAttribute("data-bs-original-title", "Copied!");
+                    bootstrap.Tooltip.getInstance(copyButton).show();
+
+                    setTimeout(() => {
+                        copyButton.setAttribute("data-bs-original-title", "Copy to clipboard");
+                        bootstrap.Tooltip.getInstance(copyButton).hide();
+                    }, 2000);
+                });
+            });
+
+            // Append copy button to <pre> block
+            pre.appendChild(copyButton);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.querySelector('.navbar');
+            const card = document.getElementById('sidebar-card');
+
+            if (navbar && card) {
+                const navbarHeight = navbar.offsetHeight;
+
+                window.addEventListener('scroll', function() {
+                    const cardTop = card.getBoundingClientRect().top;
+
+                    if (cardTop <= navbarHeight) {
+                        card.style.position = 'absolute';
+                        card.style.top = `${navbarHeight}px`;
+                    } else {
+                        card.style.position = 'sticky';
+                        card.style.top = '0';
+                    }
+                });
+            }
+        });
+
+
+
+        // Function to toggle class based on screen size
+        function handleResponsiveClass() {
+            const rowElement = document.querySelector('.equal-height-row');
+
+            if (rowElement) {
+                if (window.matchMedia('(max-width: 576px)').matches) {
+                    // Small screen: Remove the class
+                    rowElement.classList.remove('equal-height-row');
+                } else {
+                    // Larger screen: Add the class back
+                    rowElement.classList.add('equal-height-row');
+                }
+            }
+        }
+
+        // Run on page load
+        handleResponsiveClass();
+
+        // Run on window resize
+        window.addEventListener('resize', handleResponsiveClass);
+       
+        function addClassToTopStory2() {
+            const smallScreenQuery = window.matchMedia("(max-width: 768px)");
+            const topStory2Element = document.getElementById("topStory-2");
+
+            if (smallScreenQuery.matches) {
+                topStory2Element.classList.add("py-3");
+            } else {
+                topStory2Element.classList.remove("py-3");
+            }
+        }
+
+        // Run on initial load
+        addClassToTopStory2();
+
+        // Listen for screen size changes
+        window.addEventListener("resize", addClassToTopStory2);
+
+    </script>
+</body>
+</html>
