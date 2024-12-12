@@ -94,7 +94,7 @@ DATABASES = {
         'NAME': 'w3indonesia_db',
         'USER': 'endo',
         'PASSWORD': 'Merdeka2021',
-        'HOST': '82.112.234.38',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
