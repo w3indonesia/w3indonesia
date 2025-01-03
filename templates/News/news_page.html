@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+
+{% block navbar %}
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-navbar border-bottom">
+        <div class="container">
+            <!-- Navbar Toggler for Offcanvas -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-list"></i>
+            </button>
+    
+            <!-- Navbar Brand -->
+            <a class="navbar-brand mx-auto" style="font-weight: bold; font-family: system-ui, -apple-system;" href="/">
+                W3Indonesia
+            </a>
+    
+            <!-- Navbar Toggler for Collapsing Navbar (Desktop) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-hr"></i>
+            </button>
+    
+            <!-- Navbar Links (Collapsing for smaller screens) -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/jobs/">Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/scholarship/">Scholarship</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/news/">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact/">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Offcanvas Menu (Mobile Version) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasLeft" aria-labelledby="offcanvasLeftLabel">
+        <div class="offcanvas-header bg-light">
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body bg-light">
+            <!-- Categories List -->
+            <ul class="list-unstyled d-flex flex-wrap justify-content-center ms-1">
+                {% for category in news_categories %}
+                    <li class="mb-3">
+                        <a href="{% url 'news:news_by_category' category.slug %}">
+                            <div class="align-items-center btn btn-primary me-1 mb-2 rounded-5">
+                                <span>{{ category.name }} </span> <i class="bi bi-box-arrow-in-up-right ms-1"></i>
+                            </div>
+                        </a>
+                    </li>
+                {% empty %}
+                    <li class="text-muted">Tidak ada kategori yang tersedia.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+
+{% endblock %}
+
+{% block content %}
+
+<!-- Latest News -->
+<section class="latest-news mt-3">
+    <div class="container">
+        <div class="py-1 pt-3 section-title">
+            <h2 class="category-title text-light ms-2">Indeks Berita</h2>
+        </div>
+        <div class="row mt-1 g-4">
+            {% load custom_tags %}
+            {% with articles_list|insert_random:"mari_belajar" as articles_with_section %}
+                {% for article in articles_with_section %}
+                    {% if article == "mari_belajar" %}
+                        {% include "news/mari_belajar_section.html" %}
+                    {% else %}
+                        <div class="col-md-6">
+                            <div class="card">
+                                {% if article.image %}
+                                    <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/600x300" class="card-img-top" alt="{{ article.title }}">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="{% url 'news:news_detail' article.category.slug article.slug %}" class="text-decoration-none">
+                                            {{ article.title }}
+                                        </a>
+                                    </h5><hr>
+                                    <p class="text-muted">
+                                        <i class="bi bi-clock text-warning"></i> 
+                                        Published on: {{ article.published_date|date:"d M Y" }}
+                                        //  <a href="{% url 'news:news_by_category' article.category.slug %}" class="text-decoration-none">{{ article.category.name }}</a>
+                                    </p>
+                                    <p class="card-text">{{ article.content|truncatewords_html:30|safe }}</p>
+                                    <a href="{% url 'news:news_detail' article.category.slug article.slug %}" class="btn btn-outline-primary btn-sm">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+        </div>
+        
+
+        <!-- Pagination controls -->
+        <div class="pagination">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'news:news_page' page_number=1 %}" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'news:news_page' page_number=page_obj.previous_page_number %}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                    </li>
+                {% endif %}
+        
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                </li>
+        
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'news:news_page' page_number=page_obj.next_page_number %}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'news:news_page' page_number=page_obj.paginator.num_pages %}" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+
+
+
+
+
+

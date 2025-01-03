@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="container py-5 mt-4">
+        <div class="row mb-4 p-3 shadow-sm">
+            <div class="col-12 col-md-3">
+                <!-- Sidebar Navigation -->
+                <div class="list-group fixed-sidebar">
+                    <a href="#overview-{{ scholarship.id }}" class="list-group-item list-group-item-action">Overview</a>
+                    <a href="#eligibility-{{ scholarship.id }}" class="list-group-item list-group-item-action">Eligibility</a>
+                    <a href="#requirements-{{ scholarship.id }}" class="list-group-item list-group-item-action">Requirements</a>
+                </div>
+            </div>
+            <div class="col-12 col-md-9">
+                <!-- Content Sections -->
+                <h2 id="overview-{{ scholarship.id }}">{{ scholarship.provider }}</h2>
+                <div>{{ scholarship.description|safe }}</div>
+
+                <h2 id="eligibility-{{ scholarship.id }}">Eligibility</h2>
+                <div>{{ scholarship.eligibility|safe }}</div>
+
+                <h2 class="mb-4" id="requirements-{{ scholarship.id }}">Scholarship Requirements</h2>
+                <div class="row">
+                    <div class="col-6 col-md-4 mb-3">
+                        <div class="border p-3 rounded text-center">
+                            <strong>Age</strong>
+                            <p>{{ scholarship.age|default:'Unknown' }}</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 mb-3">
+                        <div class="border p-3 rounded text-center">
+                            <strong>IELTS</strong>
+                            <p>{{ scholarship.ielts|default:'Not Required' }}</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3">
+                        <div class="border p-3 rounded text-center">
+                            <strong>TOEFL</strong>
+                            <p>{{ scholarship.toefl|default:'Not Required' }}</p>
+                        </div>
+                    </div>
+                    <div>
+                      {{ scholarship.requirement|safe }}
+                    </div>
+                </div>
+                <p class="deadline-detail">Application Deadline: {{ scholarship.application_deadline }}</p>
+                <p class="mt-3"><a href="{{ scholarship.website }}" target="_blank" class="btn btn-primary">Official Website</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

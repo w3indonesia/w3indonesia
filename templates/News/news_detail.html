@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-navbar border-bottom">
+        <div class="container">
+            <!-- Navbar Toggler for Offcanvas -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-list"></i>
+            </button>
+    
+            <!-- Navbar Brand -->
+            <a class="navbar-brand mx-auto" style="font-weight: bold; font-family: system-ui, -apple-system;" href="/">
+                W3Indonesia
+            </a>
+    
+            <!-- Navbar Toggler for Collapsing Navbar (Desktop) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-hr"></i>
+            </button>
+    
+            <!-- Navbar Links (Collapsing for smaller screens) -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/jobs/">Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/scholarship/">Scholarship</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/news/">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact/">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Offcanvas Menu (Mobile Version) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasLeft" aria-labelledby="offcanvasLeftLabel">
+        <div class="offcanvas-header bg-light">
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body bg-light">
+            <!-- Categories List -->
+            <ul class="list-unstyled d-flex flex-wrap justify-content-center ms-1">
+                {% for category in news_categories %}
+                    <li class="mb-3">
+                        <a href="{% url 'news:news_by_category' category.slug %}">
+                            <div class="align-items-center btn btn-primary me-1 mb-2 rounded-5">
+                                <span>{{ category.name }} </span> <i class="bi bi-box-arrow-in-up-right ms-1"></i>
+                            </div>
+                        </a>
+                    </li>
+                {% empty %}
+                    <li class="text-muted">Tidak ada kategori yang tersedia.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+
+{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-8 col-lg-8">
+            <div class="shadow-lg">
+                {% if news_article.image %}
+                    <img src="{{ news_article.image.url }}" class="card-img-top" alt="Gambar {{ news_article.title }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/800x400" class="card-img-top" alt="Default Image">
+                {% endif %}
+                <div class="p-4">
+                    <h1 class="mb-4">{{ news_article.title }}</h1><hr>
+                    <p class="text-muted">
+                        <i class="bi bi-clock text-warning"></i> 
+                        Published on: {{ news_article.published_date|date:"d M Y" }} 
+                         //  <a href="{% url 'news:news_by_category' news_article.category.slug %}" class="text-decoration-none">{{ news_article.category.name }}</a>
+                    </p>
+                    <p class="">{{ news_article.content|safe }}</p>
+                </div>
+                <div class="text-muted text-center pb-2 mb-3">
+                    <a href="{% url 'news:news_list' %}" class="btn btn-warning">Kembali ke Beranda Berita</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4">
+            <div class="position-sticky mb-4" id="sidebar_news_card" style="top: 0px;">
+                <div class="shadow-lg border-0">
+                    <div class="card-header">
+                        <p class="ms-2 fs-5 fw-bold p-2 mb-0 text-light">TOP 5 NEWS</p>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    {% for article in popular_articles %}
+                                        <li class="list-group-item border-0 text-start">
+                                            <a class="text-decoration-none" href="{% url 'news:news_detail' article.category.slug article.slug %}">
+                                                {{ article.title }}
+                                            </a>
+                                        </li>
+                                    {% empty %}
+                                        <li class="list-group-item border-0 text-start">No popular news available.</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="position-sticky" id="sidebar_news_card" style="top: 0px;">
+                <div class="shadow-lg border-0">
+                    <div class="card-header">
+                        <p class="ms-2 fs-5 fw-bold p-2 mb-0 text-light">TOP 5 NEWS</p>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    {% for article in popular_articles %}
+                                        <li class="list-group-item border-0 text-start">
+                                            <a class="text-decoration-none" href="{% url 'news:news_detail' article.category.slug article.slug %}">
+                                                {{ article.title }}
+                                            </a>
+                                        </li>
+                                    {% empty %}
+                                        <li class="list-group-item border-0 text-start">No popular news available.</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

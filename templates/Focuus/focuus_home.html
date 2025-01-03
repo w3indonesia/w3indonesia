@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container pt-4 mt-5">
+  <!-- Tabs for Large Screens -->
+   <div class="col-md-6">
+     <ul class="nav nav-tabs d-none d-lg-flex" id="myNavTabs" role="tablist">
+       <li class="nav-item" role="presentation">
+         <a class="nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Project</a>
+       </li>
+       <li class="nav-item" role="presentation">
+         <a class="nav-link" id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Requirements</a>
+       </li>
+       <li class="nav-item" role="presentation">
+         <a class="nav-link" id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Stages</a>
+       </li>
+       <li class="nav-item" role="presentation">
+         <a class="nav-link" id="tab4-tab" data-bs-toggle="tab" href="#tab4" role="tab" aria-controls="tab4" aria-selected="false">Product</a>
+       </li>
+     </ul>
+   </div>
+
+  <!-- Dropdown for Small Screens -->
+  <div class="d-lg-none">
+    <button class="btn btn-secondary custom-dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Project <i class="fas fa-chevron-down"></i>
+    </button>
+    <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+      <li><a class="dropdown-item" href="#tab1" role="tab" aria-controls="tab1">Category</a></li>
+      <li><a class="dropdown-item" href="#tab2" role="tab" aria-controls="tab2">Requirements</a></li>
+      <li><a class="dropdown-item" href="#tab3" role="tab" aria-controls="tab3">Stages</a></li>
+      <li><a class="dropdown-item" href="#tab4" role="tab" aria-controls="tab4">Product</a></li>
+    </ul>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content mt-3" id="myTabContent">
+    <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+      <div>
+          {% for project in projects %}
+            <h5>{{ project.name }}</h5>
+          {% endfor %}
+      </div>
+      <div>
+          {% for project in projects %}
+            {{ project.description }}
+          {% endfor %}
+      </div>
+    </div>
+    <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+      <div>
+        {% for project in projects %}
+          {{ project.requirements }}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+      {% for project in projects %}
+          {{ project.name }}
+      {% endfor %}
+    </div>
+    <div class="tab-pane fade" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
+      <h2>Product</h2>
+      <p>Achieve academic excellence and earn credentials to advance your career.</p>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

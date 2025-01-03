@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="welcome-section py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-6 text-center text-md-start">
+                <h1 class="display-4">W3Indonesia </br> <span class="display-2 fw-bold">Jobs Findeerr!</span> </h1>
+                <p class="lead">Jalur cepat yang mempermudah Anda menemukan pekerjaan yang tepat, sesuai dengan keahlian, minat, dan kebutuhan karier.</p>
+                <form method="get" action="{% url 'jobs:job_search' %}">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="query" placeholder="Cari premium jobs..." aria-label="Search Jobs" aria-describedby="basic-addon2">
+                        <button class="btn btn-primary" type="submit" id="basic-addon2">Search</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6 d-none d-md-flex justify-content-center align-items-center text-center mt-5">
+                <img src="{% static 'img/jobs-welcome-img.png' %}" class="img-fluid" alt="Welcome Image">
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container-fluid pb-0">
+    <div class="row justify-content-center">
+        <div class="col-md-11 job-section">
+            <div class="py-1 pt-3 section-title">
+                <h2 class="category-title text-light ms-2">Indeks Lowongan</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="jobs-listing">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            {% for job in page_obj %}
+            <div class="col-md-11">
+                <div class="card-body" style="width: 100%; display: inline;">
+                    <div class="row bg-light border-bottom mb-4" style="text-align: start;">
+                        <div class="col-12 bg-job-title pt-2 d-flex justify-content-between ">
+                            <h5 class="fs-4 job-title py-1">
+                                <a href="{% url 'jobs:job_detail' job.slug %}" class="text-decoration-none text-muted">
+                                    {{ job.title }}
+                                </a>
+                            </h5>
+                            <div class="apply-section pb-2">
+                                {% if job.apply_link %}
+                                    <a href="{{ job.apply_link }}" class="btn btn-primary" target="_blank">Apply Now</a>
+                                {% elif job.apply_email %}
+                                    <a href="mailto:{{ job.apply_email }}" class="btn btn-primary">Apply via Email</a>
+                                {% else %}
+                                    <p class="text-muted">No application method provided.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="col-sm-10 col-md-12">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <div class="logo">
+                                        {% if job.company_logo %}
+                                            <img src="{{ job.company_logo.url }}" alt="{{ job.company }}-Logo" class="img-fluid company-logo py-1"> 
+                                        {% else %}
+                                            <img src="{% static 'img/company-logo-default.png' %}" alt="Default Company Logo" class="img-fluid company-logo py-1"> 
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 job-position">
+                                    <p class="job-company"><i class="bi bi-buildings job-desc-color"></i> {{ job.company }}</p>
+                                    <p class="job-type"><i class="bi bi-diagram-3-fill job-desc-color"></i> <span class="text-muted"> Position:</span> <span class="fw-bold">{{ job.job_type|default:"-" }}</span></p>
+                                    <p class="job-location"><i class="bi bi-geo-alt-fill job-desc-color"></i> Penempatan: <span class="fw-bold">{{ job.location|default:"-" }}</span></p>
+                                    <p class="job-type"><i class="bi bi-bar-chart-line-fill job-desc-color"></i> Level: <span class="fw-bold">{{ job.job_level|default:"-" }}</span></p>
+                                    <p class="job-location"><i class="bi bi-cash-coin job-desc-color"> </i> Salary: <span class="fw-bold">Rp {{ job.salary|default:"-" }}</span></p>
+                                    <p class="text-muted job-date"><i class="bi bi-clock job-desc-color"></i> Posted {{ job.time_since_posted }}</p>
+                                    <p class="text-muted job-date"><i class="bi bi-hourglass-split job-desc-color"></i> Expired: {{ job.time_until_expiration }}</p>
+                                </div>
+                                <div class="col-md-4 requirements">
+                                    <p class="job-type"><i class="bi bi-exclamation-triangle job-desc-color"></i> Requirements:</p>
+                                    <p class="job-location"> {{ job.qualifications|safe }}</p>
+                                </div>
+                                <div class="col-md-4 requirements">
+                                    <p class="job-type"><i class="bi bi-ui-checks job-desc-color"></i> Descriptions:</p>
+                                    <p class="job-location"> {{ job.description|safe }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-center">No jobs available at the moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="pagination justify-content-center mt-4">
+            <nav>
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1" aria-label="First">
+                                <span aria-hidden="true">&laquo;&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">&laquo;&laquo;</span>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">&laquo;</span>
+                        </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if num == page_obj.number %}
+                            <li class="page-item active" aria-current="page">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                                <span aria-hidden="true">&raquo;&raquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">&raquo;</span>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">&raquo;&raquo;</span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const industryColors = {};
+        const colors = ['#395886', '#6B3779', '#0E117A', '#EE964B', '#44A680', '#FD5F55', '#28AFB0', '#FFC107', '#E91E63', '#3F51B5'];
+        let colorIndex = 0;
+
+        document.querySelectorAll('.job-category').forEach(function(element) {
+            const industry = element.textContent.trim();
+            if (!industryColors[industry]) {
+                industryColors[industry] = colors[colorIndex % colors.length];
+                colorIndex++;
+            }
+            element.style.backgroundColor = industryColors[industry];
+            element.style.color = '#fff';
+            element.style.padding = '0.5em 1em';
+            element.style.borderRadius = '50px';
+            element.style.display = 'inline-block';
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const colors = ['#4CCF50', '#2156F3', '#AF9800', '#28AFB0', '#FD5F55', '#F4D35E', '#E67C7C', '#0E117A', '#6B3779', '#395886'];
+        let colorIndex = 0;
+
+        document.querySelectorAll('.bullet').forEach(function(element) {
+            element.style.backgroundColor = colors[colorIndex % colors.length];
+            colorIndex++;
+        });
+    });
+</script>
+
+{% endblock %}

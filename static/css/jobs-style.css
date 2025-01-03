@@ -1,0 +1,132 @@
+    .company-logo {
+        max-width: 100px; 
+        max-height: 100px; 
+        width: auto; 
+        height: auto; 
+        margin: 0 auto;
+    }
+    
+    @media (max-width: 576px) {
+        .company-logo {
+            max-width: 300px; 
+            max-height: 100px; 
+            width: auto; 
+            height: auto; 
+            margin: 0 auto;
+        }
+    }
+    
+    .welcome-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .welcome-section h1, .welcome-section h2 {
+        margin-bottom: 20px;
+    }
+    
+    .welcome-section .search-form {
+        margin-top: 20px;
+    }
+    
+    .card {
+        transition: transform 0.2s;
+    }
+    
+    .card:hover {
+        transform: scale(1.05);
+    }
+    
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .card-title {
+        margin-top: 10px;
+        font-size: 1.25rem;
+    }
+    
+    .card-text {
+        margin-bottom: 10px;
+    }
+
+    .job-card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 20px;
+        display: flex; 
+    }
+
+    .job-company {
+        color: rgb(19, 10, 54);
+        font-weight: bold;
+    }
+
+    .job-logo {
+        width: 80px;
+        height: 80px;
+        padding-top: 3px;
+    }
+
+    .job-info {
+        flex: 1;
+    }
+
+    .job-category {
+        display: block;
+        align-items: end !important;
+    }
+    
+    .bullet {
+        display: inline-flex;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        margin-right: 3px; 
+        vertical-align: middle;
+        margin-bottom: 2px;
+    }
+
+    @media (max-width: 576px) {
+        .job-info-padding {
+            padding-top: 0.3rem !important;
+            padding-left: 0px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .job-position {
+            padding-top: 1.5rem !important;
+        }
+    }
+
+    .job-section {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .bg-jobs {
+        background-color: #f0eeee;
+        /* border-left: 10px solid #ffbd07; */
+        padding-top: 8px;
+        color: #e26923;
+    }
+
+    .job-header img {
+        object-fit: cover;
+    }
+    
+    .bg-job-title {
+        background-color: #edecee !important;
+    }
+
+    .job-desc-color {
+        color: #1e0ad6;
+    }
+    

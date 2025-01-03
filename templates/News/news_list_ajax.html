@@ -1,0 +1,8 @@
+{% for article in page_obj %}
+<a href="{% url 'news:news_detail' article.category.slug article.slug %}" class="editor-pick-card m-1 text-decoration-none">
+    {% if article.image %}
+    <img src="{{ article.image.url }}" alt="{{ article.title }}" class="card-img-top">
+    {% endif %}
+    <p class="editor-pick-card-title text-start">{{ article.title }}</p>
+</a>
+{% endfor %}

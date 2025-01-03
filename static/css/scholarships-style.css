@@ -1,0 +1,92 @@
+
+        .scholarship-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-width: 100%;
+            margin: 0 auto 15px auto;
+        }
+        .scholarship-card .header {
+            background-color: #eaebeb;
+            padding: 10px;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+            width: 100%;
+            height: 70px;
+        }
+        .scholarship-card .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .scholarship-card .grant,
+        .scholarship-card .deadline {
+            font-size: 18px;
+            color: #fcfcfc;
+        }
+        .scholarship-card .scholarship-name {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .scholarship-card .tags {
+            margin: 10px 0;
+        }
+        .scholarship-card .tags span {
+            background-color: #064d8f;
+            border-radius: 15px;
+            padding: 5px 10px;
+            margin-right: 5px;
+            display: inline-block;
+            color: white;
+        }
+        .scholarship-card .grade-tag {
+            margin: 10px 0;
+        }
+        .scholarship-card .grade-tag span .yes{
+            color: rgb(0, 182, 97);
+            font-weight: bolder;
+        }
+        .scholarship-card .grade-tag span .no{
+            color: rgb(207, 4, 4);
+            font-weight: bolder;
+        }
+        .scholarship-card .eligibility {
+            color: #007bff;
+            text-decoration: none;
+            display: block;
+        }
+        .scholarship-card .provider {
+            height: 70px;
+        }
+        .scholarship-card .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        .scholarship-card .grant {
+            background-color: #756CFA;
+            color: #ffffff;
+        }
+        .scholarship-section {
+            background-color: #064d8f;  
+        }
+        .fixed-sidebar {
+            position: fixed;
+            top: 100px;
+            width: 15%; 
+        }
+        .fixed-sidebar a {
+            background-color: #fdfdfd;
+            color: #090129;
+        }
+        @media (max-width: 767px) {
+            .fixed-sidebar {
+                display: none;
+            }
+        }
+        .deadline-detail {
+            background-color: #da2e53;
+            color: #ffffff;
+            font-weight: bold;
+            display: inline;
+            padding: 5px;
+        }

@@ -1,0 +1,124 @@
+.clearfix {
+    clear: both !important;
+}
+#mainCarousel {
+    height: 578px;
+}
+
+.carousel-inner {
+    height: 100%;
+}
+
+.carousel-item {
+    height: 100%;
+}
+
+.carousel-item img {
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the entire carousel item */
+}
+
+/* Media query for small screens */
+@media (max-width: 767px) {
+    #mainCarousel {
+        height: 300px; /* Adjust this value as needed */
+    }
+}
+.carousel-caption {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-left: 15px; /* Adjust this value as needed */
+    padding-right: 15px; /* Adjust this value as needed */
+    text-align: left;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #fcfafa;
+}
+.trending-section {
+    padding: 0 !important;
+}
+.news-link:hover {
+    color: #2600fd !important;
+}
+
+.editor-picks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.editor-pick-card {
+    flex: 1 1 calc(33.33% - 16px);
+    max-width: calc(33.33% - 16px);
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.editor-pick-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.editor-pick-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.editor-pick-card-title {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 12px;
+    margin: 0;
+}
+
+
+
+@media (max-width: 768px) {
+    .editor-pick-card {
+        flex: 1 1 calc(50% - 16px);
+        max-width: calc(50% - 16px);
+    }
+}
+
+@media (max-width: 480px) {
+    .editor-pick-card {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
+
+
+/* For large and medium screens: vertical scroll */
+@media (min-width: 768px) {
+    .popular-categories-scroll {
+        max-height: 330px; /* Adjust this value as needed */
+        overflow-y: auto;
+    }
+}
+
+/* For small screens: horizontal scroll */
+@media (max-width: 767px) {
+    .popular-categories-scroll {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* Optional styling to improve visual appearance */
+.popular-categories-scroll a {
+    display: inline-block; /* Make the list items inline for horizontal scrolling */
+    width: auto; /* Allow list items to adjust their width */
+}
+

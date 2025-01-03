@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="welcome-section py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-6 text-center text-md-start">
+                <h1 class="display-4">W3Indonesia </br> <span class="display-3 fw-bold">Scholarship Findeerr!</span></h1>
+                <p class="lead">Jalur cepat untuk menemukan beasiswa impian yang sesuai dengan kebutuhan pendidikan Anda.</p>
+                <form method="get" action="{% url 'scholarships:scholarship_search' %}">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="query" placeholder="Cari beasiswa..." aria-label="Search Scholarships" aria-describedby="basic-addon2">
+                        <button class="btn btn-primary" type="submit" id="basic-addon2">Search</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6 d-none d-md-flex justify-content-center align-items-center text-center mt-5">
+                <img src="{% static 'img/scholarship-welcome-img.png' %}" class="img-fluid" alt="Welcome Image">
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row py-5 justify-content-center">
+        <div class="col-md-12">
+            <div class="py-1 pt-3 scholarship-section">
+                <h2 class="category-title text-light text-center">Available Scholarship</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="scholarship-list">
+    <div class="row justify-content-center ajax">
+        {% for scholarship in page_obj %}
+            <div class="col-md-4">
+                <div class="scholarship-card p-0 mb-5">
+                    <div class="header">{{ scholarship.provider }}</div>
+                    <div class="ms-2">
+                        <p class="mb-0 fw-bold">Beasiswa untuk jurusan: </p>
+                        <div>
+                            {{ scholarship.applicable_program|truncatechars:50 }}
+                            <a href="{% url 'scholarships:scholarship_detail' scholarship.slug %}" class="eligibility">Read more</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="tags justify-content-between ms-2">
+                        <span>IELTS: {{ scholarship.ielts }}</span>
+                        <span>TOEFL: {{ scholarship.toefl|default:"-" }}</span>
+                    </div>
+                    <a href="{% url 'scholarships:scholarship_detail' scholarship.slug %}" class="eligibility ms-2">
+                        Read more about this scholarship <i class="bi bi-send-arrow-up"></i>
+                    </a>
+                    <div class="footer ms-2">
+                        <div>Location: {{ scholarship.location }}</div>
+                    </div>
+                    <div class="d-flex grant justify-content-between py-2">
+                        <div class="ms-2">
+                            <span>Beasiswa</span>
+                            <div class="grant">{{ scholarship.scholarship_amount }}</div>
+                        </div>
+                        <div class="me-2">
+                            <span>Deadline</span>
+                            <div class="deadline">{{ scholarship.application_deadline }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="container text-center mb-4">
+    {% if page_obj.has_next %}
+        <button id="loadMore" class="btn btn-primary" data-page="{{ page_obj.number }}">Load More</button>
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loadMoreButton = document.getElementById('loadMore');
+
+        loadMoreButton.addEventListener('click', function() {
+            const currentPage = loadMoreButton.getAttribute('data-page');
+            const nextPage = parseInt(currentPage) + 1;
+
+            fetch('?page=' + nextPage, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.html) {
+                    // Menambahkan data HTML ke dalam halaman
+                    document.querySelector('.container .ajax').insertAdjacentHTML('beforeend', data.html);
+
+                    // Perbarui halaman saat ini
+                    loadMoreButton.setAttribute('data-page', nextPage);
+
+                    // Menyembunyikan tombol jika tidak ada halaman berikutnya
+                    if (!data.has_next) {
+                        loadMoreButton.style.display = 'none';
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const colors = ['#395886', '#6B3779', '#0E117A', '#EE964B', '#44A680', '#FD5F55', '#28AFB0', '#FFC107', '#E91E63', '#3F51B5'];
+        let colorIndex = 0;
+
+        document.querySelectorAll('.scholarship-category').forEach(function(element) {
+            element.style.backgroundColor = colors[colorIndex % colors.length];
+            colorIndex++;
+        });
+    });
+</script>
+
+{% endblock %}

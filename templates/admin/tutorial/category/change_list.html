@@ -1,0 +1,94 @@
+{% extends "admin/change_list.html" %}
+
+{% block content %}
+<h1>Daftar Kategori</h1>
+
+<!-- Dropdown untuk memilih kategori dengan Bootstrap -->
+<select id="category-dropdown" class="form-select mb-4">
+    <option value="">Pilih Kategori</option>
+    {% for category in cl.queryset %}
+        <option value="#category-{{ category.id }}">{{ category.order }}. {{ category.name }}</option>
+    {% endfor %}
+</select>
+<br>
+
+{% for category in cl.queryset %}
+<br>
+    <div id="category-{{ category.id }}" class="category-section">
+        <strong>{{ category.order }}. {{ category.name }}</strong> ---
+        
+        <!-- Tombol Edit Kategori -->
+        <a href="{% url 'admin:tutorial_category_change' category.id %}" class="btn btn-sm btn-warning" target="_blank">
+            Edit Kategori ||
+        </a>
+        
+        <!-- Tombol Hapus Kategori -->
+        <a href="{% url 'admin:tutorial_category_delete' category.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">Hapus Kategori</a>
+
+        <!-- Tombol Tambah Subkategori -->
+        <a href="/admin/tutorial/subcategory/add/?category={{ category.id }}" class="btn btn-sm btn-primary mt-2" target="_blank">
+            || Tambah Subkategori
+        </a>
+
+        <br>
+        <br>
+        <hr>
+        
+        <ul>
+            {% for subcategory in category.subcategories.all %}
+                <li style="list-style-type: none;">
+                    <strong>{{ subcategory.order }}. {{ subcategory.name }}</strong> --- ({{ subcategory.articles.count }} artikel)
+                    
+                    <!-- Tombol Edit Subkategori -->
+                    <a href="{% url 'admin:tutorial_subcategory_change' subcategory.id %}" target="_blank" class="btn-sm btn-warning">
+                        Edit Subkategori ||
+                    </a>
+                    
+                    <!-- Tombol Hapus Subkategori -->
+                    <a href="{% url 'admin:tutorial_subcategory_delete' subcategory.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus subkategori ini?')">Hapus Subkategori</a>
+
+                    <ul>
+                        {% for article in subcategory.articles.all %}
+                            <li style="list-style-type: none;">
+                                {{ subcategory.order }}.{{ article.order }}. {{ article.title }} --- <em>{{ article.created_at|date:"d M Y" }}</em>
+                                
+                                <!-- Tombol Edit Artikel -->
+                                <a href="{% url 'admin:tutorial_article_change' article.id %}" target="_blank" class="btn btn-sm btn-warning">
+                                    Edit Artikel ||
+                                </a>
+                                
+                                <!-- Tombol Hapus Artikel -->
+                                <a href="{% url 'admin:tutorial_article_delete' article.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus artikel ini?')">Hapus Artikel</a>
+                            </li>
+                        {% empty %}
+                            <li>Tidak ada artikel dalam subkategori ini.</li>
+                        {% endfor %}
+                        <!-- Tombol Tambah Artikel -->
+                        <li>
+                            <a href="/admin/tutorial/article/add/?subcategory={{ subcategory.id }}" class="btn btn-sm btn-primary" target="_blank">
+                                + Tambah Artikel
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            {% empty %}
+                <li>Tidak ada subkategori.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <br>
+    <hr>
+{% endfor %}
+
+<!-- JavaScript untuk mengarahkan ke bagian kategori yang dipilih -->
+<script>
+    document.getElementById('category-dropdown').addEventListener('change', function() {
+        var categoryId = this.value;
+        if (categoryId) {
+            // Mengarahkan ke bagian kategori yang dipilih
+            window.location.hash = categoryId;
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{ project.name }}</h1>
+    <p>{{ project.description }}</p>
+
+    <h2>Phases</h2>
+    <ul>
+        {% for phase in project.phases.all %}
+        <li>
+            <h3>{{ phase.title }}</h3>
+            <p>{{ phase.description }}</p>
+            <h4>Articles</h4>
+            <ul>
+                {% for article in phase.articles.all %}
+                <li>
+                    <h5>{{ article.title }}</h5>
+                    <p>{{ article.content|truncatewords:50 }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

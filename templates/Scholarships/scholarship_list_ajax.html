@@ -1,0 +1,35 @@
+    {% for scholarship in page_obj %}
+        <div class="col-md-4">
+            <div class="scholarship-card p-0 mb-5">
+                <div class="header">{{ scholarship.provider }}</div>
+                <div class="ms-2">
+                    <p class="mb-0 fw-bold">Beasiswa untuk jurusan: </p>
+                    <div>
+                        {{ scholarship.applicable_program|truncatechars:50 }}
+                        <a href="{% url 'scholarships:scholarship_detail' scholarship.slug %}" class="eligibility">Read more</a>
+                    </div>
+                </div>
+                <br>
+                <div class="tags justify-content-between ms-2">
+                    <span>IELTS: {{ scholarship.ielts }}</span>
+                    <span>TOEFL: {{ scholarship.toefl|default:"-" }}</span>
+                </div>
+                <a href="{% url 'scholarships:scholarship_detail' scholarship.slug %}" class="eligibility ms-2">
+                    Read more about this scholarship <i class="bi bi-send-arrow-up"></i>
+                </a>
+                <div class="footer ms-2">
+                    <div>Location: {{ scholarship.location }}</div>
+                </div>
+                <div class="d-flex grant justify-content-between py-2">
+                    <div class="ms-2">
+                        <span>Beasiswa</span>
+                        <div class="grant">{{ scholarship.scholarship_amount }}</div>
+                    </div>
+                    <div class="me-2">
+                        <span>Deadline</span>
+                        <div class="deadline">{{ scholarship.application_deadline }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
